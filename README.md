@@ -1,4 +1,5 @@
-# Python 打包分发工具
+# Python 打包分发流程
+
 ## 1. 安装
 
 ```
@@ -42,13 +43,11 @@ setup(
 )
 ```
 
-
-
 ## 3. 打包方式
 
 ### 3.1 Source distribution
 
->使用 sdist 可以打包成 source distribution，支持的压缩格式有：
+> 使用 sdist 可以打包成 source distribution，支持的压缩格式有：
 
 | Format | Description                  | Notes        |
 | ------ | ---------------------------- | ------------ |
@@ -77,7 +76,7 @@ python setup.py develop
 
 ### 3.2 Built distribution
 
->使用 bdist 可以打出 built distribution，和源码包相比，由于预先构建好，所以安装更快：
+> 使用 bdist 可以打出 built distribution，和源码包相比，由于预先构建好，所以安装更快：
 
 | Format  | Description                          | Notes        |
 | ------- | ------------------------------------ | ------------ |
@@ -119,7 +118,7 @@ twine upload dist/*
 
 ### 4.3 配置 .pypirc 文件
 
->Home 目录下创建
+> Home 目录下创建
 
 ```
 [distutils]
@@ -137,3 +136,10 @@ username:
 password: 
 ```
 
+## 其他
+
+> 清除 .idea 的 git 缓存
+
+```
+git rm -r --cached .idea
+```
