@@ -48,7 +48,7 @@ def init_condarc(mirror_url="mirrors.bfsu.edu.cn", set_env_dir=False):
     :return:
     """
     condarc = os.path.expanduser('~/.condarc')
-    # 向condarc写入镜像配置
+    # 向 condarc 写入镜像配置
     with open(condarc, 'w') as f:
         if set_env_dir:
             f.write("envs_dirs:\n")

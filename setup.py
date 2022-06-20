@@ -5,7 +5,7 @@
 @FileName   : setup.py
 @Description: 
 """
-from setuptools import setup, find_packages, find_namespace_packages
+from setuptools import setup, find_namespace_packages
 
 
 def readme():
@@ -40,4 +40,3 @@ setup(
     # 指定项目依赖的 Python 版本。
     python_requires='>=3.7',
 )
-

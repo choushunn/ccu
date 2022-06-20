@@ -1,0 +1,16 @@
+{
+  "epochs": 2000,
+  "start_epoch": -1,
+  "dataset": "DIV2K",
+  "batch_size": 1,
+  "lr": 0.0002,
+  "num_worker": 8,
+  "img_height": 256,
+  "img_width": 256,
+  "channels": 3,
+  "checkpoint_interval": 10,
+  "save_dir": "runs",
+  "cuda": true,
+  "exp_dir": "runs\\exp_1",
+  "run_time": "2022-06-20 18:04:31"
+}
