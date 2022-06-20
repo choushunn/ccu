@@ -99,7 +99,7 @@ python setup.py bdist --formats=gztar,zip
 python setup.py bdist_wheel
 
 # 安装
-pip install dist/ccu-0.0.1-py3-none-any.whl
+pip install dist/ccu-0.0.2-py3-none-any.whl
 ```
 
 ## 4. 上传到 PyPI

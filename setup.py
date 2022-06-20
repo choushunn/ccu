@@ -22,7 +22,7 @@ setup(
     # 应用名
     name='ccu',
     # 版本号
-    version='0.0.1',
+    version='0.0.2',
     # 作者
     author='choushunn',
     # 作者邮箱

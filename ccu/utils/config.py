@@ -9,7 +9,9 @@ import argparse
 import datetime
 import json
 import os
+import platform
 
+import torch
 from rich.console import Console
 
 console = Console()
@@ -20,24 +22,28 @@ def parse_args():
     Parsing arguments
     :return:
     """
-    parser = argparse.ArgumentParser("PyTorch Image Captioning")
-    parser.add_argument("--epochs", type=int, default=2000, help="number of epochs of training")
-    parser.add_argument("--start_epoch", type=int, default=-1, help="epoch to start training from")
-    parser.add_argument("--dataset", type=str, default="DIV2K", help="name of the dataset")
-    parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")
-    parser.add_argument("--lr", type=float, default=0.0002, help="adam: learning rate")
-    parser.add_argument("--num_worker", type=int, default=8,
-                        help="number of cpu threads to use during batch generation")
-    parser.add_argument("--img_height", type=int, default=256, help="size of image height")
-    parser.add_argument("--img_width", type=int, default=256, help="size of image width")
-    parser.add_argument("--channels", type=int, default=3, help="number of image channels")
-    parser.add_argument("--checkpoint_interval", type=int, default=10, help="interval between saving model checkpoints")
-    parser.add_argument("--save_dir", type=str, default='runs', help='Path for saving results')
-    parser.add_argument("--cuda", action='store_false', help='Use cuda?')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model', type=str, default='GAN', choices=['GAN', 'WGAN'], help='model name')
+    parser.add_argument('--datasets', type=str, default='datasets', help='data directory')
+    parser.add_argument('--epochs', type=int, default=10, help='number of epochs')
+    parser.add_argument('--batch_size', type=int, default=64, help='batch size')
+    parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
+    parser.add_argument('--optimizer', type=str, default='adam', help='optimizer')
+    parser.add_argument('--loss', type=str, default='l1', choices=[], help='loss')
+    parser.add_argument('--hyp', type=str, default='', help='yaml file')
+    parser.add_argument('--resume', type=str, default='', help='resume from checkpoint')
+    parser.add_argument('--weights', type=str, default='', help='weights')
+    parser.add_argument('--pretrained', action='store_true', help='use pretrained model')
+    parser.add_argument('--num_workers', type=int, default=int(os.cpu_count() * 3 / 4), help='number of workers')
+    parser.add_argument('--save_dir', type=str, default='runs', help='save directory')
+    parser.add_argument('--cuda', action='store_false', help='use cuda')
+    parser.add_argument('--log_interval', type=int, default=10, help='log interval')
+    parser.add_argument('--save_interval', type=int, default=10, help='save interval')
+    parser.add_argument('--save_best', action='store_true', help='save best model')
     return check_args(parser.parse_args())
 
 
-def check_args(args: argparse.Namespace) -> argparse.Namespace:
+def check_args(args):
     """
     Checking arguments
     :param args:
@@ -52,12 +58,12 @@ def check_args(args: argparse.Namespace) -> argparse.Namespace:
                                                style='bold red')
 
     # --cuda
-    args.cuda = True if args.cuda else False
+    args.cuda = args.cuda and torch.cuda.is_available()
 
     # 创建runs文件夹
     args.exp_dir = make_runs_dir(args, sub_dirs=['images', 'logs', 'checkpoints'])
     args.run_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+    args.platform = platform.system()
     # save config
     json.dump(vars(args), open(os.path.join(args.exp_dir, 'args.json'), 'w'))
     return args
@@ -99,4 +105,3 @@ def make_runs_dir(args, sub_dirs: list = None):
 
 if __name__ == '__main__':
     args = parse_args()
-    console.print(args)

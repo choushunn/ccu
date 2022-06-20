@@ -40,7 +40,7 @@ def init_pip(mirror_url="mirrors.aliyun.com"):
         print("pip.ini 初始化完成")
 
 
-def init_condarc(mirror_url="mirrors.bfsu.edu.cn", set_env_dir=False):
+def init_conda(mirror_url="mirrors.bfsu.edu.cn", set_env_dir=False):
     """
     初始化 condarc
     :param mirror_url:镜像源url

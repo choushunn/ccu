@@ -5,9 +5,7 @@
 @FileName   : plot.py
 @Description: 
 """
-import cv2
 import numpy as np
-import torch
 from matplotlib import pyplot as plt
 
 plt.rcParams['font.sans-serif'] = ['SimHei']
@@ -76,19 +74,3 @@ def plot_image(image: np.ndarray, title: str = None, gray=False):
     plt.xticks([])
     plt.yticks([])
     plt.show()
-
-
-def save_gan_image(imgs, batches_done, path):
-    """
-    保存生成图像
-    """
-    real_A, fake_B, real_B = imgs
-    for img in range(real_A.shape[0]):
-        real_A_img = real_A[img].mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to("cpu", torch.uint8).numpy()
-        real_B_img = real_B[img].mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to("cpu", torch.uint8).numpy()
-        fake = fake_B[img].mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to("cpu", torch.uint8).numpy()
-        cv2.imwrite(f"{path}/{batches_done}_fake_{img}.png", fake)
-        cv2.imwrite(f"{path}/{batches_done}_real_A_{img}.png", real_A_img)
-        cv2.imwrite(f"{path}/{batches_done}_real_B_{img}.png", real_B_img)
-        # plot3sub_images([real_A_img, real_B_img, fake], ["真实图像", "输入图像", "生成图像"],
-        #                 f"{str(batches_done).zfill(5)}_" + "第" + str(img) + "张图像")
